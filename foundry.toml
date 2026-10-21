@@ -1,0 +1,32 @@
+# Ouroboros Press. Conventions copied from the Sinopia launch (#1942, imported-repo
+# evm_contracts on Robinhood Chain): bytecode_hash = "none" is required by IMD's import,
+# solc 0.8.26, cancun, optimizer 200, no CBOR metadata. via_ir is off (BUILD-PLAN.md §4).
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+script = "script"
+solc = "0.8.26"
+evm_version = "cancun"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+bytecode_hash = "none"
+cbor_metadata = false
+# The fork suite needs a Robinhood Chain RPC; the default suite is fully offline.
+no_match_path = "test/fork/*"
+
+[profile.default.fuzz]
+runs = 256
+
+# FOUNDRY_PROFILE=fork forge test   (reads live Robinhood Chain state; broadcasts nothing)
+[profile.fork]
+no_match_path = "test/never/*"
+
+[rpc_endpoints]
+robinhood = "https://rpc.mainnet.chain.robinhood.com"
+
+[lint]
+# Keep the build output (and the launch build check) to the compiler only.
+lint_on_build = false
