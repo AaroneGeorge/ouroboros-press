@@ -162,7 +162,7 @@ THREAT-MODEL.md  foundry.toml  LICENSE
 
 ## 7. Live on Robinhood Chain, verifiable
 
-**Status:** launched 21 Oct 2026 18:36 UTC as IMD launch #2408; chapter 1 delivered by callback at 18:52 UTC and inscribed; chapter 2 commissioned at 19:03 UTC and delivered by callback at 19:07 UTC. Submitted on IMD Radar at 19:16 UTC. Every value below is read from the chain or IMD's API by the script beside it; nothing is invented.
+**Status:** launched 21 Oct 2026 18:36 UTC as IMD launch #2408; chapter 1 delivered by callback at 18:52 UTC and inscribed; chapter 2 commissioned at 19:03 UTC, delivered by callback at 19:07 UTC and inscribed at 21:53 UTC. Submitted on IMD Radar at 19:16 UTC. The press is idle with both chapters inscribed; the next `commission()` is open to anyone who funds it with 0.52 IMD. Every value below is read from the chain or IMD's API by the script beside it; nothing is invented.
 
 | Evidence | Value | From |
 |---|---|---|
@@ -171,7 +171,7 @@ THREAT-MODEL.md  foundry.toml  LICENSE
 | Contract (no owner; source verification on Blockscout pending, its API sits behind a Cloudflare challenge) | 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a on Robinhood Chain | `08-status.sh` |
 | Job UUIDs bought by the contract | f50efda3-a8ab-4172-852d-ce747f9f082b, c8207062-0178-478e-8056-088f993adaf4 | `08-status.sh` |
 | Chapter 1 | request tx 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, callback tx 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, inscribe tx 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, uri ipfs://bafybeiezrp2k5xje3kivf6qonwbwsmzzwu3utl2tfnmomwcu2ehy6wweta/result.json | `08-status.sh`, `09-inscribe.sh` |
-| Chapter 2 | request tx 0xfc96495bd963c5c3befe56c08d4ebc2b91cbbb2fba7b3026fd7610442f5dd2a3, callback tx 0xf04c0f7bd890a4f4112c15f56361b98635dfceaa01c6f11eb4c96a2988000721, uri ipfs://bafybeidf4ufyhon7ohlzetze6zg2obyd4qrkpdxbc6z74asrowe6ogotcy/result.json (quotes chapter 1; delivered 4 min after the order) | `08-status.sh` |
+| Chapter 2 | request tx 0xfc96495bd963c5c3befe56c08d4ebc2b91cbbb2fba7b3026fd7610442f5dd2a3, callback tx 0xf04c0f7bd890a4f4112c15f56361b98635dfceaa01c6f11eb4c96a2988000721, inscribe tx 0x5edf41ca9efa7e74127608d2634225f76c1c812d51f9c0815b08b1ce1d086e2c, uri ipfs://bafybeidf4ufyhon7ohlzetze6zg2obyd4qrkpdxbc6z74asrowe6ogotcy/result.json (quotes chapter 1; delivered 4 min after the order) | `08-status.sh`, `09-inscribe.sh` |
 | Repo at commit | github.com/AaroneGeorge/ouroboros-press@fc2ace3 (tests + THREAT-MODEL.md) | `01-import.sh` |
 | X build log | @ouroborospress_ | |
 | Payout wallet (`paidBy` of the launch) | 0x53901ec1997fFf496B063f86dC2fE2f2782f4243 | `00-wallet.sh` |
