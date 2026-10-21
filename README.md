@@ -9,6 +9,7 @@
 <img alt="foundry" src="https://img.shields.io/badge/built%20with-Foundry-orange">
 <img alt="tests" src="https://img.shields.io/badge/tests-32%20%2B%203%20fork-2ea44f">
 <img alt="owner" src="https://img.shields.io/badge/owner-none-success">
+<img alt="source" src="https://img.shields.io/badge/source-verified%20on%20Sourcify-2ea44f">
 <img alt="license" src="https://img.shields.io/badge/license-MIT-blue">
 </p>
 
@@ -154,7 +155,7 @@ test/                       OuroborosPress.t.sol (32 tests), mocks/, fork/ (3 te
 script/PreviewBody.s.sol    the job body for any address and balance, offline
 scripts/                    00 to 12 + lib.sh (§10)
 lib/                        OpenZeppelin 5.4.0, forge-std 1.14.0: vendored, no submodules
-docs/screenshots/           screenshots, added after launch
+docs/screenshots/           the demo screenshots embedded in this README
 THREAT-MODEL.md  foundry.toml  LICENSE
 ```
 
@@ -168,7 +169,7 @@ THREAT-MODEL.md  foundry.toml  LICENSE
 |---|---|---|
 | Launch number and attestation | #2408, https://api.imd.fun/launches/5cddd7dc-a9a2-4615-af12-41abc1092e52 (`https://api.imd.fun/launches/<id>`) | `05-watch-launch.sh` |
 | Launch request tx | 0x43a78419b0ec1aef6284cfdc8e0e2e51ed00a89ceecb4dd418dfda8a1a8cef6f | `.state/launch-tx` |
-| Contract (no owner; source verification on Blockscout pending, its API sits behind a Cloudflare challenge) | 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a on Robinhood Chain | `08-status.sh` |
+| Contract (no owner). Source verified on Sourcify, exact match of creation and runtime bytecode: https://repo.sourcify.dev/4663/0xfc65446d2c8A7eE6B173D62dB710B76BD8BC978A (Blockscout's own import of it is pending; its API sits behind a Cloudflare challenge) | 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a on Robinhood Chain | `08-status.sh`, `10-verify.sh` |
 | Job UUIDs bought by the contract | f50efda3-a8ab-4172-852d-ce747f9f082b, c8207062-0178-478e-8056-088f993adaf4 | `08-status.sh` |
 | Chapter 1 | request tx 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, callback tx 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, inscribe tx 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, uri ipfs://bafybeiezrp2k5xje3kivf6qonwbwsmzzwu3utl2tfnmomwcu2ehy6wweta/result.json | `08-status.sh`, `09-inscribe.sh` |
 | Chapter 2 | request tx 0xfc96495bd963c5c3befe56c08d4ebc2b91cbbb2fba7b3026fd7610442f5dd2a3, callback tx 0xf04c0f7bd890a4f4112c15f56361b98635dfceaa01c6f11eb4c96a2988000721, inscribe tx 0x5edf41ca9efa7e74127608d2634225f76c1c812d51f9c0815b08b1ce1d086e2c, uri ipfs://bafybeidf4ufyhon7ohlzetze6zg2obyd4qrkpdxbc6z74asrowe6ogotcy/result.json (quotes chapter 1; delivered 4 min after the order) | `08-status.sh`, `09-inscribe.sh` |
@@ -196,18 +197,65 @@ Other views: `previewBody()`, `isInscribed(n)`, `busy()`, `pendingRequest()`, `p
 
 ## 8. Demo walkthrough
 
-Three transactions carry the mechanic (3, 5, 7 below); `scripts/12-demo.sh` narrates them read-only, with each chapter's opening lines from IPFS.
+All screenshots are from the live Robinhood Chain run in §7, captured in a 1920 px Brave window; the full-resolution PNGs are in [`docs/screenshots/`](docs/screenshots/). Three transactions carry the mechanic (3, 5 and 7 below); `scripts/12-demo.sh` narrates all of it read-only.
 
-1. Launch #2408, live, in IMD's launch record (audit verdict passed, deployed on Robinhood Chain 11 minutes after the request): ![launch record](docs/screenshots/launch-record.png)
-2. The press on Blockscout, `STEWARD()` is 0x0; the three transactions below are its whole history so far: ![press on Blockscout](docs/screenshots/explorer-txs.png)
-3. **Request** 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, by anyone: `Commissioned`, and Intake v2 pulls 0.5 IMD from the press to IMD's treasury.
-4. The job IMD's swarm ran, f50efda3-a8ab-4172-852d-ce747f9f082b, with `paidBy` = the press's commissioner and the result hash that the callback carried: ![job](docs/screenshots/04-job.png)
-5. **Callback** 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, IMD's writer via Intake v2: `Chapter(1, requestId, resultHash, uri)`, `BountyPaid(commissioner, 0.02 IMD)`.
-6. Chapter 1 on IPFS, as `scripts/12-demo.sh` reads it back (hash-checked against the chain): ![chapter 1](docs/screenshots/06-chapter-1.png)
-7. **Inscribe** 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, by anyone: `Inscribed(1, uri)`; chapter 2's body now quotes the uri.
-8. `scripts/12-demo.sh`, the read-only narration of all of the above: ![demo](docs/screenshots/hero.png)
-9. Tests, 32 offline and 3 on live state: `forge test` and `FOUNDRY_PROFILE=fork forge test --match-path 'test/fork/*'` (§9).
-10. The dated X build log: @ouroborospress_.
+### 1 — The launch record: IMD audited the repo and deployed the press
+
+[`api.imd.fun/launches/5cddd7dc-…`](https://api.imd.fun/launches/5cddd7dc-a9a2-4615-af12-41abc1092e52): launch **#2408**, `kind: evm_contracts`, `status: live`, `chainId: 4663`, `requester` = the launch wallet, and under `artifacts` the contract `OuroborosPress` at `0xfc65…978a` with its deploy tx. Every admission check (`provenance`, `findings`, `independent_review`, `bytecode`, `manifest`, `economics`, `protected_invariants`) reads `passed`. The press went live 11 minutes after the 0.5 IMD request.
+
+![Launch record](docs/screenshots/launch-record.png)
+
+### 2 — The press on Blockscout: four transactions, all from outside
+
+[The contract's transactions](https://robinhoodchain.blockscout.com/address/0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a?tab=txs): two `commission()` calls (each a token transfer of 0.5 IMD out of the press) and two `inscribe()` calls, all sent by the launch wallet as an ordinary caller. There is no other way to act on the press: `STEWARD()` is 0x0, so nothing can re-point, pause or drain it.
+
+![Press on Blockscout](docs/screenshots/explorer-txs.png)
+
+### 3 — Request: the contract pays for chapter 1 with its own IMD
+
+[`0x8b0105…5ea6`](https://robinhoodchain.blockscout.com/tx/0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6): method `commission`, status success, and the token line `0xfc…978A → 0x4e…ADbc for 0.5 IMD`: Intake v2 pulls the price from the press's balance, not from the caller. The `Commissioned` event carries the request id that the callback must echo.
+
+![Request transaction](docs/screenshots/03-request-tx.png)
+
+### 4 — The job IMD's swarm ran
+
+[`api.imd.fun/jobs/f50efda3-…`](https://api.imd.fun/jobs/f50efda3-a8ab-4172-852d-ce747f9f082b): `state: completed`, `paidBy` = the press (`0xfc65…978a`), the objective "Write chapter 1 of The Ouroboros Press, a book that a smart contract on Robinhood Chain is writing about itself…", and the verdict `accepted`. This is the contract as a paying customer, visible from IMD's side.
+
+![Job record](docs/screenshots/04-job.png)
+
+### 5 — Callback: the writer delivers, the contract pays the bounty
+
+[`0x41bb36…eda0`](https://robinhoodchain.blockscout.com/tx/0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0): sent by IMD's settlement address `0x3d…25CB`, calling `complete` on Intake v2 (`0xa4…DE82`), which calls `onResult` on the press inside its 200,000-gas window. The token line `0xfc…978A → 0x53…4243 for 0.02 IMD` is `BountyPaid` to the commissioner; `Chapter(1, requestId, resultHash, uri)` is in the logs. One minute after the order.
+
+![Callback transaction](docs/screenshots/05-callback-tx.png)
+
+### 6 — Both chapters, read back and hash-checked
+
+`scripts/12-demo.sh` fetches each chapter's `result.json` from IPFS, checks its keccak256 against `resultHash` on chain, follows it to the text (sha256-checked against the manifest) and prints the opening words. Chapter 1 opens "I begin with an address rather than a memory"; chapter 2 opens by answering chapter 1's closing question.
+
+![Chapters 1 and 2](docs/screenshots/06-chapter-1.png)
+
+### 7 — Inscribe: the uri goes into storage
+
+[`0x3317f3…a3f0`](https://robinhoodchain.blockscout.com/tx/0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0): `inscribe(1, uri)` (selector `0xed619c20`), by anyone, with the uri from the `Chapter` event; it is stored only because it hashes to the `uriHash` the callback left. Chapter 2's request body then quotes it. Chapter 2 was inscribed the same way in [`0x5edf41…86e2c`](https://robinhoodchain.blockscout.com/tx/0x5edf41ca9efa7e74127608d2634225f76c1c812d51f9c0815b08b1ce1d086e2c).
+
+![Inscribe transaction](docs/screenshots/07-inscribe-tx.png)
+
+### 8 — The read-only narration
+
+`scripts/12-demo.sh` against the live press, no wallet: chain, launch, press state (`STEWARD()` 0x0, price, bounty, balance, chapters, pending), every chapter and every transaction, each with its explorer link.
+
+![Demo script](docs/screenshots/hero.png)
+
+### 9 — Tests: 32 offline, 3 against live state
+
+`forge test` (32 passed) and `FOUNDRY_PROFILE=fork forge test --match-path 'test/fork/*' -vv` (3 passed, against Robinhood Chain state through the public RPC; nothing is broadcast). The suites are described in §9.
+
+![Tests](docs/screenshots/09-tests.png)
+
+### 10 — The dated X build log
+
+[@ouroborospress_](https://x.com/ouroborospress_): one post per step above, in order, with X's timestamps.
 
 ---
 
