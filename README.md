@@ -162,15 +162,16 @@ THREAT-MODEL.md  foundry.toml  LICENSE
 
 ## 7. Live on Robinhood Chain, verifiable
 
-**Status:** launched 21 Oct 2026 18:36 UTC as IMD launch #2408; chapter 1 delivered by callback at 18:52 UTC and inscribed; chapter 2 commissioned at 19:03 UTC. Every value below is read from the chain or IMD's API by the script beside it; nothing is invented.
+**Status:** launched 21 Oct 2026 18:36 UTC as IMD launch #2408; chapter 1 delivered by callback at 18:52 UTC and inscribed; chapter 2 commissioned at 19:03 UTC and delivered by callback at 19:07 UTC. Submitted on IMD Radar at 19:16 UTC. Every value below is read from the chain or IMD's API by the script beside it; nothing is invented.
 
 | Evidence | Value | From |
 |---|---|---|
 | Launch number and attestation | #2408, https://api.imd.fun/launches/5cddd7dc-a9a2-4615-af12-41abc1092e52 (`https://api.imd.fun/launches/<id>`) | `05-watch-launch.sh` |
 | Launch request tx | 0x43a78419b0ec1aef6284cfdc8e0e2e51ed00a89ceecb4dd418dfda8a1a8cef6f | `.state/launch-tx` |
-| Contract (verified, no owner) | 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a on Robinhood Chain | `08-status.sh` |
+| Contract (no owner; source verification on Blockscout pending, its API sits behind a Cloudflare challenge) | 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a on Robinhood Chain | `08-status.sh` |
 | Job UUIDs bought by the contract | f50efda3-a8ab-4172-852d-ce747f9f082b, c8207062-0178-478e-8056-088f993adaf4 | `08-status.sh` |
 | Chapter 1 | request tx 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, callback tx 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, inscribe tx 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, uri ipfs://bafybeiezrp2k5xje3kivf6qonwbwsmzzwu3utl2tfnmomwcu2ehy6wweta/result.json | `08-status.sh`, `09-inscribe.sh` |
+| Chapter 2 | request tx 0xfc96495bd963c5c3befe56c08d4ebc2b91cbbb2fba7b3026fd7610442f5dd2a3, callback tx 0xf04c0f7bd890a4f4112c15f56361b98635dfceaa01c6f11eb4c96a2988000721, uri ipfs://bafybeidf4ufyhon7ohlzetze6zg2obyd4qrkpdxbc6z74asrowe6ogotcy/result.json (quotes chapter 1; delivered 4 min after the order) | `08-status.sh` |
 | Repo at commit | github.com/AaroneGeorge/ouroboros-press@fc2ace3 (tests + THREAT-MODEL.md) | `01-import.sh` |
 | X build log | @ouroborospress_ | |
 | Payout wallet (`paidBy` of the launch) | 0x53901ec1997fFf496B063f86dC2fE2f2782f4243 | `00-wallet.sh` |
@@ -197,16 +198,16 @@ Other views: `previewBody()`, `isInscribed(n)`, `busy()`, `pendingRequest()`, `p
 
 Three transactions carry the mechanic (3, 5, 7 below); `scripts/12-demo.sh` narrates them read-only, with each chapter's opening lines from IPFS.
 
-1. Launch #2408, live: ![launch](docs/screenshots/01-launch.png)
-2. The press on Blockscout, verified, `STEWARD()` is 0x0: ![press](docs/screenshots/02-press-contract.png)
-3. **Request** 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, by anyone: `Commissioned`, and Intake v2 pulls 0.5 IMD from the press to IMD's treasury. ![request](docs/screenshots/03-request-tx.png)
-4. The job IMD's swarm ran, f50efda3-a8ab-4172-852d-ce747f9f082b: ![job](docs/screenshots/04-job.png)
-5. **Callback** 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, IMD's writer via Intake v2: `Chapter(1, requestId, resultHash, uri)`, `BountyPaid(commissioner, 0.02 IMD)`. ![callback](docs/screenshots/05-callback-tx.png)
-6. Chapter 1 on IPFS: ![chapter 1](docs/screenshots/06-chapter-1.png)
-7. **Inscribe** 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, by anyone: `Inscribed(1, uri)`; chapter 2's body now quotes the uri. ![inscribe](docs/screenshots/07-inscribe-tx.png)
-8. `scripts/12-demo.sh`: ![demo](docs/screenshots/08-demo-script.png)
-9. Tests, 32 offline and 3 on live state: ![tests](docs/screenshots/09-tests.png)
-10. The dated X build log: ![X](docs/screenshots/10-x-build-log.png)
+1. Launch #2408, live, in IMD's launch record (audit verdict passed, deployed on Robinhood Chain 11 minutes after the request): ![launch record](docs/screenshots/launch-record.png)
+2. The press on Blockscout, `STEWARD()` is 0x0; the three transactions below are its whole history so far: ![press on Blockscout](docs/screenshots/explorer-txs.png)
+3. **Request** 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, by anyone: `Commissioned`, and Intake v2 pulls 0.5 IMD from the press to IMD's treasury.
+4. The job IMD's swarm ran, f50efda3-a8ab-4172-852d-ce747f9f082b, with `paidBy` = the press's commissioner and the result hash that the callback carried: ![job](docs/screenshots/04-job.png)
+5. **Callback** 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, IMD's writer via Intake v2: `Chapter(1, requestId, resultHash, uri)`, `BountyPaid(commissioner, 0.02 IMD)`.
+6. Chapter 1 on IPFS, as `scripts/12-demo.sh` reads it back (hash-checked against the chain): ![chapter 1](docs/screenshots/06-chapter-1.png)
+7. **Inscribe** 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, by anyone: `Inscribed(1, uri)`; chapter 2's body now quotes the uri.
+8. `scripts/12-demo.sh`, the read-only narration of all of the above: ![demo](docs/screenshots/hero.png)
+9. Tests, 32 offline and 3 on live state: `forge test` and `FOUNDRY_PROFILE=fork forge test --match-path 'test/fork/*'` (§9).
+10. The dated X build log: @ouroborospress_.
 
 ---
 
