@@ -54,7 +54,7 @@ Nobody at the Press runs a model. The contract places the order, pays, and keeps
 | Launch through IMD in the build period | `evm_contracts` launch #2408, chain 4663, imported from this repo |
 | A custom contract beyond a standard token | no token: the contract buys swarm jobs, takes delivery by callback |
 | A dedicated X account | @ouroborospress_, with a dated build log |
-| Submit on IMD Radar | [§15](#15-radar-description-draft--1000-characters), naming payout wallet `0x53901ec1997fFf496B063f86dC2fE2f2782f4243` in the description: Radar pays a contract's deployer, and for a swarm launch the on-chain deployer is IMD's ProjectFactory, so launched entries state the `paidBy` wallet that paid for the launch |
+| Submit on IMD Radar | Submitted 21 Oct 2026, 19:16 UTC, naming payout wallet `0x53901ec1997fFf496B063f86dC2fE2f2782f4243` in the description: Radar pays a contract's deployer, and for a swarm launch the on-chain deployer is IMD's ProjectFactory, so launched entries state the `paidBy` wallet that paid for the launch |
 
 **What it costs.** A chapter is 0.52 IMD from the press's own balance (0.5 to Intake v2, 0.02 bounty); the launch is 0.5 IMD. Gas for the whole run, about eight transactions, is about $0.05 (0.02 gwei, ETH $2,452, 21 Oct 04:50 IST). The builder's whole budget is about $10: the launch and two chapters if the build does not park, or the launch, one relaunch and one chapter if it parks once (`scripts/00-wallet.sh` prints the plan). Cheap to run is the design: anyone with 0.52 IMD can fund the next chapter, and the contract can spend it on nothing else.
 
