@@ -34,8 +34,7 @@
 12. [Limitations, by choice](#12-limitations-by-choice)
 13. [What we'd build next](#13-what-wed-build-next)
 14. [Developer experience & feedback](#14-developer-experience--feedback)
-15. [Radar description](#15-radar-description-draft--1000-characters)
-16. [License](#16-license)
+15. [License](#15-license)
 
 ---
 
@@ -356,18 +355,6 @@ From building and verifying this entry, 20 to 21 Oct 2026.
 
 ---
 
-## 15. Radar description (draft, <= 1,000 characters)
-
-Submitted text (979 characters; the limit is 1,000):
-
-> Ouroboros Press is a smart contract that is writing a book about itself, and it pays for every chapter with its own money. Anyone can call commission(). The contract then buys one research-report job from IMD's Intake v2 for 0.5 IMD out of its own balance, asking the swarm to write the next chapter of its on-chain life. The writer calls back with the result hash and IPFS link; the contract records it and pays the commissioner 0.02 IMD. Nobody owns it: no admin, no withdraw, no way to re-point it. Chapter 1 is on chain and chapter 2 is being written.
->
-> Details: IMD launch #2408 on Robinhood Chain (4663): api.imd.fun/launches/5cddd7dc-a9a2-4615-af12-41abc1092e52. Contract: 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a. Chapter 1: job f50efda3-a8ab-4172-852d-ce747f9f082b. Chapter 2: job c8207062-0178-478e-8056-088f993adaf4. Code + tests: github.com/AaroneGeorge/ouroboros-press. X: @ouroborospress_. Payout wallet (launch paidBy): 0x53901ec1997fFf496B063f86dC2fE2f2782f4243
-
-If only one chapter was bought, delete `, c8207062-0178-478e-8056-088f993adaf4` when you paste.
-
----
-
-## 16. License
+## 15. License
 
 MIT, (c) 2026 AaroneGeorge. Built for the Identity MD (IMD) hackathon, October 2026. See [LICENSE](LICENSE).
