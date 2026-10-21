@@ -51,10 +51,10 @@ Nobody at the Press runs a model. The contract places the order, pays, and keeps
 
 | Hackathon rule (7 Oct) | How this entry meets it |
 |---|---|
-| Launch through IMD in the build period | `evm_contracts` launch #<LAUNCH_NUMBER>, chain 4663, imported from this repo |
+| Launch through IMD in the build period | `evm_contracts` launch #2408, chain 4663, imported from this repo |
 | A custom contract beyond a standard token | no token: the contract buys swarm jobs, takes delivery by callback |
-| A dedicated X account | <@HANDLE>, with a dated build log |
-| Submit on IMD Radar | [§15](#15-radar-description-draft--1000-characters), naming payout wallet `<WALLET>` in the description: Radar pays a contract's deployer, and for a swarm launch the on-chain deployer is IMD's ProjectFactory, so launched entries state the `paidBy` wallet that paid for the launch |
+| A dedicated X account | @ouroborospress_, with a dated build log |
+| Submit on IMD Radar | [§15](#15-radar-description-draft--1000-characters), naming payout wallet `0x53901ec1997fFf496B063f86dC2fE2f2782f4243` in the description: Radar pays a contract's deployer, and for a swarm launch the on-chain deployer is IMD's ProjectFactory, so launched entries state the `paidBy` wallet that paid for the launch |
 
 **What it costs.** A chapter is 0.52 IMD from the press's own balance (0.5 to Intake v2, 0.02 bounty); the launch is 0.5 IMD. Gas for the whole run, about eight transactions, is about $0.05 (0.02 gwei, ETH $2,452, 21 Oct 04:50 IST). The builder's whole budget is about $10: the launch and two chapters if the build does not park, or the launch, one relaunch and one chapter if it parks once (`scripts/00-wallet.sh` prints the plan). Cheap to run is the design: anyone with 0.52 IMD can fund the next chapter, and the contract can spend it on nothing else.
 
@@ -136,10 +136,10 @@ Lines are in [`src/OuroborosPress.sol`](src/OuroborosPress.sol); tests in [`test
 |---|---|
 | Chain | Robinhood Chain (Arbitrum Orbit), chain id `4663`, RPC `https://rpc.mainnet.chain.robinhood.com` |
 | Explorer | `https://robinhoodchain.blockscout.com` (unverified: from research notes, not IMD's docs; override with `RH_EXPLORER`) |
-| **Ouroboros Press** | `<PRESS>`, launch #<LAUNCH_NUMBER> |
+| **Ouroboros Press** | `0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a`, launch #2408 |
 | IMD Intake v2 (same on every chain) | `0xa43e6f75ee006411f79ac1c84120606c2330de82` |
 | IMD token (18 decimals) | `0x5f7bb59365ce557c26dbcaa4ee9d39a4b95b7127` |
-| Payout wallet (`paidBy`) | `<WALLET>` |
+| Payout wallet (`paidBy`) | `0x53901ec1997fFf496B063f86dC2fE2f2782f4243` |
 | IMD API and docs | `https://api.imd.fun`, https://imd.fun/docs/ |
 
 Selectors: `request` `0x380c2cda`, `requestWithFailure` `0x9a78c321` (both in the Intake's bytecode), `onResult` `0x4374622e`, `onFailure` `0x5a0df71e` (asserted in tests). Constants: price 0.5 IMD, bounty 0.02 IMD, timeout 6 h, cool-down 1 h doubling to 128 h, quoted uri at most 256 bytes; zero constructor arguments.
@@ -162,31 +162,31 @@ THREAT-MODEL.md  foundry.toml  LICENSE
 
 ## 7. Live on Robinhood Chain, verifiable
 
-**Status:** built, tested and fork-verified 20 to 21 Oct 2026, not yet launched. Each placeholder is filled from the script beside it; nothing is invented.
+**Status:** launched 21 Oct 2026 18:36 UTC as IMD launch #2408; chapter 1 delivered by callback at 18:52 UTC and inscribed; chapter 2 commissioned at 19:03 UTC. Every value below is read from the chain or IMD's API by the script beside it; nothing is invented.
 
 | Evidence | Value | From |
 |---|---|---|
-| Launch number and attestation | #<LAUNCH_NUMBER>, <LAUNCH_LINK> (`https://api.imd.fun/launches/<id>`) | `05-watch-launch.sh` |
-| Launch request tx | <LAUNCH_TX> | `.state/launch-tx` |
-| Contract (verified, no owner) | <PRESS> on Robinhood Chain | `08-status.sh` |
-| Job UUIDs bought by the contract | <JOB_UUID_1>, <JOB_UUID_2> | `08-status.sh` |
-| Chapter 1 | request tx <REQ_TX_1>, callback tx <CB_TX_1>, inscribe tx <INSCRIBE_TX_1>, uri <CHAPTER_1_URI> | `08-status.sh`, `09-inscribe.sh` |
-| Repo at commit | github.com/<OWNER>/ouroboros-press@<COMMIT7> (tests + THREAT-MODEL.md) | `01-import.sh` |
-| X build log | <@HANDLE> | |
-| Payout wallet (`paidBy` of the launch) | <WALLET> | `00-wallet.sh` |
+| Launch number and attestation | #2408, https://api.imd.fun/launches/5cddd7dc-a9a2-4615-af12-41abc1092e52 (`https://api.imd.fun/launches/<id>`) | `05-watch-launch.sh` |
+| Launch request tx | 0x43a78419b0ec1aef6284cfdc8e0e2e51ed00a89ceecb4dd418dfda8a1a8cef6f | `.state/launch-tx` |
+| Contract (verified, no owner) | 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a on Robinhood Chain | `08-status.sh` |
+| Job UUIDs bought by the contract | f50efda3-a8ab-4172-852d-ce747f9f082b, c8207062-0178-478e-8056-088f993adaf4 | `08-status.sh` |
+| Chapter 1 | request tx 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, callback tx 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, inscribe tx 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, uri ipfs://bafybeiezrp2k5xje3kivf6qonwbwsmzzwu3utl2tfnmomwcu2ehy6wweta/result.json | `08-status.sh`, `09-inscribe.sh` |
+| Repo at commit | github.com/AaroneGeorge/ouroboros-press@fc2ace3 (tests + THREAT-MODEL.md) | `01-import.sh` |
+| X build log | @ouroborospress_ | |
+| Payout wallet (`paidBy` of the launch) | 0x53901ec1997fFf496B063f86dC2fE2f2782f4243 | `00-wallet.sh` |
 
 **Check it yourself**, read-only, no wallet:
 
 ```sh
-RPC=https://rpc.mainnet.chain.robinhood.com; PRESS=<PRESS>
+RPC=https://rpc.mainnet.chain.robinhood.com; PRESS=0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a
 cast chain-id --rpc-url $RPC                                 # 4663
 cast call $PRESS "STEWARD()(address)" --rpc-url $RPC        # 0x0000000000000000000000000000000000000000
 cast call $PRESS "intake()(address)" --rpc-url $RPC         # 0xa43e6F75ee006411F79Ac1C84120606C2330DE82
 cast call $PRESS "chapterCount()(uint256)" --rpc-url $RPC   # chapters delivered by callback
 cast call $PRESS "chapter(uint256)((bytes32,bytes32,bytes32,address,uint48,uint48,string))" 1 --rpc-url $RPC
 #   (requestId, resultHash, uriHash, commissioner, requestedAt, deliveredAt, uri)
-cast keccak "<CHAPTER_1_URI>"                                # equals uriHash
-curl -s https://api.imd.fun/intake/4663/<REQ_TX_1> | jq '.entries[0] | {state, job: .admission.result.jobId, completion}'
+cast keccak "ipfs://bafybeiezrp2k5xje3kivf6qonwbwsmzzwu3utl2tfnmomwcu2ehy6wweta/result.json"                                # equals uriHash
+curl -s https://api.imd.fun/intake/4663/0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6 | jq '.entries[0] | {state, job: .admission.result.jobId, completion}'
 ```
 
 Other views: `previewBody()`, `isInscribed(n)`, `busy()`, `pendingRequest()`, `pendingSince()`, `pendingCommissioner()`, `failures()`, `lastFailureReason()`, `cooldownUntil()`.
@@ -197,13 +197,13 @@ Other views: `previewBody()`, `isInscribed(n)`, `busy()`, `pendingRequest()`, `p
 
 Three transactions carry the mechanic (3, 5, 7 below); `scripts/12-demo.sh` narrates them read-only, with each chapter's opening lines from IPFS.
 
-1. Launch #<LAUNCH_NUMBER>, live: ![launch](docs/screenshots/01-launch.png)
+1. Launch #2408, live: ![launch](docs/screenshots/01-launch.png)
 2. The press on Blockscout, verified, `STEWARD()` is 0x0: ![press](docs/screenshots/02-press-contract.png)
-3. **Request** <REQ_TX_1>, by anyone: `Commissioned`, and Intake v2 pulls 0.5 IMD from the press to IMD's treasury. ![request](docs/screenshots/03-request-tx.png)
-4. The job IMD's swarm ran, <JOB_UUID_1>: ![job](docs/screenshots/04-job.png)
-5. **Callback** <CB_TX_1>, IMD's writer via Intake v2: `Chapter(1, requestId, resultHash, uri)`, `BountyPaid(commissioner, 0.02 IMD)`. ![callback](docs/screenshots/05-callback-tx.png)
+3. **Request** 0x8b010551056ecf944cbae1eb8f895889690f83bcacea52604d1de6f9632f5ea6, by anyone: `Commissioned`, and Intake v2 pulls 0.5 IMD from the press to IMD's treasury. ![request](docs/screenshots/03-request-tx.png)
+4. The job IMD's swarm ran, f50efda3-a8ab-4172-852d-ce747f9f082b: ![job](docs/screenshots/04-job.png)
+5. **Callback** 0x41bb36518902c547cf2ec0d09e25e189f8329f83394e36e21d8f6e1b4e10eda0, IMD's writer via Intake v2: `Chapter(1, requestId, resultHash, uri)`, `BountyPaid(commissioner, 0.02 IMD)`. ![callback](docs/screenshots/05-callback-tx.png)
 6. Chapter 1 on IPFS: ![chapter 1](docs/screenshots/06-chapter-1.png)
-7. **Inscribe** <INSCRIBE_TX_1>, by anyone: `Inscribed(1, uri)`; chapter 2's body now quotes the uri. ![inscribe](docs/screenshots/07-inscribe-tx.png)
+7. **Inscribe** 0x3317f307c3f6123aa4fd9f13efed449a9a0256499b5868408742e6173ea5a3f0, by anyone: `Inscribed(1, uri)`; chapter 2's body now quotes the uri. ![inscribe](docs/screenshots/07-inscribe-tx.png)
 8. `scripts/12-demo.sh`: ![demo](docs/screenshots/08-demo-script.png)
 9. Tests, 32 offline and 3 on live state: ![tests](docs/screenshots/09-tests.png)
 10. The dated X build log: ![X](docs/screenshots/10-x-build-log.png)
@@ -309,11 +309,13 @@ From building and verifying this entry, 20 to 21 Oct 2026.
 
 ## 15. Radar description (draft, <= 1,000 characters)
 
-Fill the placeholders from `scripts/08-status.sh`. With realistic values it is 952 characters; the limit is 1,000.
+Submitted text (979 characters; the limit is 1,000):
 
-> Ouroboros Press — a contract that pays IMD's swarm to write a book about itself. The contract itself pays IMD's Intake v2 0.5 IMD per research-report job (chapter N, on its own onchain life) and receives the chapter by callback; anyone can commission the next one for a 0.02 IMD bounty. Launched through IMD as launch #NNNN (chain 4663): <LAUNCH_LINK>. Contract (verified, no owner): <PRESS>. Jobs bought by the contract: <JOB_UUID_1>, <JOB_UUID_2>. Demo: request tx <REQ_TX_1>, callback tx <CB_TX_1>. Code + tests + threat model: github.com/<OWNER>/ouroboros-press@<COMMIT7>. X: <@HANDLE> (dated build log). Payout wallet (paid the launch, = paidBy): <WALLET>.
+> Ouroboros Press is a smart contract that is writing a book about itself, and it pays for every chapter with its own money. Anyone can call commission(). The contract then buys one research-report job from IMD's Intake v2 for 0.5 IMD out of its own balance, asking the swarm to write the next chapter of its on-chain life. The writer calls back with the result hash and IPFS link; the contract records it and pays the commissioner 0.02 IMD. Nobody owns it: no admin, no withdraw, no way to re-point it. Chapter 1 is on chain and chapter 2 is being written.
+>
+> Details: IMD launch #2408 on Robinhood Chain (4663): api.imd.fun/launches/5cddd7dc-a9a2-4615-af12-41abc1092e52. Contract: 0xfc65446d2c8a7ee6b173d62db710b76bd8bc978a. Chapter 1: job f50efda3-a8ab-4172-852d-ce747f9f082b. Chapter 2: job c8207062-0178-478e-8056-088f993adaf4. Code + tests: github.com/AaroneGeorge/ouroboros-press. X: @ouroborospress_. Payout wallet (launch paidBy): 0x53901ec1997fFf496B063f86dC2fE2f2782f4243
 
-If only one chapter was bought, delete `, <JOB_UUID_2>` when you paste.
+If only one chapter was bought, delete `, c8207062-0178-478e-8056-088f993adaf4` when you paste.
 
 ---
 
